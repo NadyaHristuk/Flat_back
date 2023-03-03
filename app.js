@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const personslPlanRouter = require("./routes/personslPlan");
 const usersRouter = require("./routes/users");
-const cashflownRouter = require("./routes/cashflow");
+const cashflowRouter = require("./routes/cashflow");
 const dymamicsRouter = require("./routes/dymamicsRouter");
 
 const app = express();
