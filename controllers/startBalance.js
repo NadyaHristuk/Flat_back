@@ -2,19 +2,14 @@ const startBalance = require("../models/startBalance");
 const moment = require("moment");
 
 const addBalance = async (req, res) => {
-  const {
-    bothSalary,
-    passiveIncome,
-    savings,
-    cost,
-    footage,
-    percentagePerMounth,
-  } = req.body;
+  const { _id } = req.user;
+  const { bothSalary, passiveIncome, savings, cost, footage, percentagePerMounth } = req.body;
   const monthSalary =
-    (cost - savings) /
-    ((bothSalary + passiveIncome) * (percentagePerMounth / 100));
+    (cost - savings) / ((bothSalary + passiveIncome) * (percentagePerMounth / 100));
+
   const year = Math.floor(monthSalary / 12);
   const month = Math.floor(monthSalary - year * 12);
+
   const newBalance = await startBalance.create({
     bothSalary,
     passiveIncome,
@@ -24,20 +19,21 @@ const addBalance = async (req, res) => {
     percentagePerMounth,
     year,
     month,
+    owner: _id,
   });
   res.json({ newBalance });
 };
 
 const getBalance = async (req, res) => {
-  const { id } = req.params;
-  const balance = await startBalance.findById(id);
+  const { _id } = req.user;
+  const balance = await startBalance.findOne({ owner: _id });
   res.send(balance);
 };
 
 const patchBalance = async (req, res) => {
-  const { id } = req.params;
-  const balance = await startBalance.findByIdAndUpdate(
-    id,
+  const { _id } = req.user;
+  const balance = await startBalance.findOneAndUpdate(
+    { owner: _id },
     { ...req.body },
     { new: true }
   );
@@ -45,11 +41,10 @@ const patchBalance = async (req, res) => {
 };
 
 const getDailyLimit = async (req, res) => {
-  const { id } = req.params;
-  const currentBalance = await startBalance.findById(id);
+  const { _id } = req.user;
+  const currentBalance = await startBalance.findOne({ owner: _id });
   const days = moment().daysInMonth();
-  const monthLimit =
-    currentBalance.bothSalary * (currentBalance.percentagePerMounth / 100);
+  const monthLimit = currentBalance.bothSalary * (currentBalance.percentagePerMounth / 100);
   const dailyLimit = currentBalance.previousDayLimit + monthLimit / days;
   res.json({ dailyLimit });
 };
