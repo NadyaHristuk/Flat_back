@@ -18,12 +18,8 @@ const signup = async(req, res, next) => {
     const result = await User.create({ email, password: hashPassword, balance });
 
         res.status(201).json({
-          success: true,
-          message: "Successfully created new user. You can Login",
-          user: { id: String(result._id),
           name,
-          email}       
-        });
+          email});
 
   } catch (error) {
     next(error);

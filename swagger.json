@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https:///"
+      "url": "https://flat-back.onrender.com"
     },
     {
       "url": "http://localhost:3005"
@@ -782,69 +782,12 @@
             "type": "string",
             "description": "User's email",
             "format": "email"
-          },
-          "city": {
-            "type": "string",
-            "description": "User's city"
-          },
-          "phone": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "birthday": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "userImgUrl": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "userPets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PetResponse"
-            }
-          },
-          "ownNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetOneNotice"
-            }
-          },
-          "favoriteNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetOneNotice"
-            }
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "accessToken": {
-                "type": "string",
-                "description": "User's accessToken"
-              },
-              "refreshToken": {
-                "type": "string",
-                "description": "User's refreshToken"
-              }
-            }
           }
         },
         "example": {
           "name": "One",
           "email": "1@gmail.com",
-          "city": "Kiev",
-          "phone": 3809739345679,
-          "birthday": null,
-          "userImgUrl": null,
-          "userPets": [],
-          "ownNotices": [],
-          "favoriteNotices": [],
-          "data": {
-            "accessToken": "xxxxx.yyyyy.zzzzz",
-            "refreshToken": "xxxxx.yyyyy.zzzzz"
-          }
+          "city": "Kiev"
         }
       },
       "LoginRequest": {
@@ -877,69 +820,11 @@
             "type": "string",
             "description": "User's email",
             "format": "email"
-          },
-          "city": {
-            "type": "string",
-            "description": "User's city"
-          },
-          "phone": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "birthday": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "userImgUrl": {
-            "type": "string",
-            "description": "User's phone"
-          },
-          "userPets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PetResponse"
-            }
-          },
-          "ownNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetOneNotice"
-            }
-          },
-          "favoriteNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetOneNotice"
-            }
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "accessToken": {
-                "type": "string",
-                "description": "User's accessToken"
-              },
-              "refreshToken": {
-                "type": "string",
-                "description": "User's refreshToken"
-              }
-            }
           }
         },
         "example": {
           "name": "One",
-          "email": "1@gmail.com",
-          "city": "Kiev",
-          "phone": 3809739345679,
-          "birthday": null,
-          "userImgUrl": null,
-          "userPets": [],
-          "ownNotices": [],
-          "favoriteNotices": [],
-          "data": {
-            "accessToken": "xxxxx.yyyyy.zzzzz",
-            "refreshToken": "xxxxx.yyyyy.zzzzz"
-          }
+          "email": "1@gmail.com"
         }
       },
       "UserRefreshTokensResponse": {
