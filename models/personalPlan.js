@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const personslPlanSchema = Schema({
+const personalPlanSchema = Schema({
   salary: Number,
   passiveIncome: Number,
   savings: Number,
@@ -17,6 +17,6 @@ const personslPlanSchema = Schema({
   },
 });
 
-const startBalance = model("personslPlan", personslPlanSchema);
+const PersonalPlan = model("personalPlan", personalPlanSchema);
 
-module.exports = PersonslPlan;
+module.exports = PersonalPlan;
