@@ -17,8 +17,8 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use("/api/users", usersRouter);
-app.use("/api/psersonal-plan", personslPlanRouter);
+app.use("/api/user", usersRouter);
+app.use("/api/personal-plan", personslPlanRouter);
 app.use("/api/cashflow", cashflowRouter);
 app.use("/api/dynamics", dymamicsRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
