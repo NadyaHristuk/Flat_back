@@ -64,9 +64,6 @@ module.exports.userInfo = async (req, res) => {
     updatedAt: 0,
     password: 0,
   })
-    .populate("ownNotices", { title: 1, description: 1 })
-    .populate("userPets", { owner: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-    .populate("favoriteNotices", { title: 1, description: 1 });
   res.status(200).json(user);
 };
 
