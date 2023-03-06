@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://project-pets-api.herokuapp.com/"
+      "url": "https://flat-back.onrender.com/"
     },
     {
       "url": "http://localhost:3005"
@@ -40,7 +40,7 @@
     }
   ],
   "paths": {
-    "/user/register": {
+    "/api/user/register": {
       "post": {
         "tags": [
           "UserAuth"
@@ -84,7 +84,7 @@
         }
       }
     },
-    "/user/login": {
+    "/api/user/login": {
       "post": {
         "tags": [
           "UserAuth"
@@ -128,7 +128,7 @@
         }
       }
     },
-    "/user/logout": {
+    "/api/user/logout": {
       "get": {
         "tags": [
           "UserAuth"
@@ -156,7 +156,47 @@
         }
       }
     },
-    "/user/info": {
+    "/api/user/addBalance": {
+      "post": {
+        "tags": [
+          "UserAuth"
+        ],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/user/info": {
       "get": {
         "tags": [
           "UserAuth"
