@@ -29,8 +29,6 @@ const signupSchema = Joi.object({
     // .pattern(/^[a-zA-Z ]+$/)
     .max(16)
     .required(),
-  city: Joi.string().required(),
-  phone: Joi.string().required(),
 });
 // Please enter email and password and name and city and phone
 // Password must be at least 6 characters
