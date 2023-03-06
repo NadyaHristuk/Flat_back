@@ -12,4 +12,6 @@ router.post("/login", validateBody(loginSchema), ctrlWrapper(ctrl.login));
 
 router.get("/logout", authenticate, ctrlWrapper(ctrl.logout));
 
+router.get("/addBalance", authenticate, ctrlWrapper(ctrl.logout));
+
 module.exports = router;
