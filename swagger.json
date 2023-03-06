@@ -751,9 +751,7 @@
         "required": [
           "name",
           "email",
-          "password",
-          "city",
-          "phone"
+          "password"
         ],
         "properties": {
           "name": {
@@ -770,16 +768,6 @@
             "type": "string",
             "description": "User's password",
             "example": "qwerty123"
-          },
-          "city": {
-            "type": "string",
-            "description": "User's city",
-            "example": "Kiev"
-          },
-          "phone": {
-            "type": "string",
-            "description": "User's phone",
-            "example": 3809739345679
           }
         }
       },
