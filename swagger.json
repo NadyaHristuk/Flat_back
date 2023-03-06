@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://flat-back.onrender.com"
+      "url": "https://project-pets-api.herokuapp.com/"
     },
     {
       "url": "http://localhost:3005"
@@ -23,20 +23,24 @@
       "description": "Authorization and info endpoints"
     },
     {
-      "name": "Personal-plan",
-      "description": "Personal plan endpoints"
+      "name": "Notice",
+      "description": "Notice endpoints"
     },
     {
-      "name": "Cashflow",
-      "description": "Cashflow endpoints"
+      "name": "Pet",
+      "description": "Pet endpoints"
     },
     {
-      "name": "Dynamics",
-      "description": "Dynamics endpoints"
+      "name": "Sponsors-info",
+      "description": "Sponsors-info endpoints"
+    },
+    {
+      "name": "News",
+      "description": "News endpoints"
     }
   ],
   "paths": {
-    "/api/user/register": {
+    "/user/register": {
       "post": {
         "tags": [
           "UserAuth"
@@ -80,7 +84,7 @@
         }
       }
     },
-    "/api/user/login": {
+    "/user/login": {
       "post": {
         "tags": [
           "UserAuth"
@@ -124,7 +128,7 @@
         }
       }
     },
-    "/api/user/logout": {
+    "/user/logout": {
       "get": {
         "tags": [
           "UserAuth"
@@ -151,14 +155,83 @@
           }
         }
       }
-    }
     },
-    "/api/personal-plan/pre": {
+    "/user/info": {
+      "get": {
+        "tags": [
+          "UserAuth"
+        ],
+        "summary": "Get current user info",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/notice": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "summary": "Get list of categories",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOneNotice"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      },
       "post": {
         "tags": [
-          "Personal-plan"
+          "Notice"
         ],
-        "summary": "Post personal plan",
+        "summary": "Post notice",
         "security": [
           {
             "Bearer": []
@@ -166,12 +239,12 @@
         ],
         "parameters": [],
         "requestBody": {
-          "description": "personal plan's object",
+          "description": "Notece's object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrePlanRequest"
+                "$ref": "#/components/schemas/PetRequest"
               }
             }
           }
@@ -182,7 +255,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrePlanResponse"
+                  "$ref": "#/components/schemas/PetResponse"
                 }
               }
             }
@@ -198,52 +271,7 @@
         }
       }
     },
-    "/api/personal-plan": {
-      "post": {
-        "tags": [
-          "Personal-plan"
-        ],
-        "summary": "Post personal plan",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "personal plan's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlanRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlanResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/api/personal-plan/category": {
+    "/notice/category": {
       "get": {
         "tags": [
           "Notice"
@@ -578,83 +606,6 @@
         }
       }
     },
-    "/notice": {
-      "get": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Get list of categories",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      },     
-      "post": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Post notice",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "Notece's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PetRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PetResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }    
-    },
     "/sponsors-info": {
       "get": {
         "tags": [
@@ -756,8 +707,7 @@
         },
         "example": {
           "name": "One",
-          "email": "1@gmail.com",
-          "city": "Kiev"
+          "email": "1@gmail.com"
         }
       },
       "LoginRequest": {
@@ -785,14 +735,116 @@
           "token": {
             "type": "string",
             "description": "User's token"
-          },
+          }
         },
         "example": {
-          "token": "63029a9e67447e95c6d80cee"
+          "token": "xxxxx.yyyyy.zzzzz"
         }
       },
-     
-     
+      "GetUserInfo": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "balance": {
+                "type": "number",
+                "description": "User's balance"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "One",
+          "email": "1@gmail.com",
+          "balance": 100000
+        }
+      },
+      "GetSponsorsInfo": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "addressUrl": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "workDays": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "isOpen": {
+                    "type": "boolean"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "title": "some text....",
+          "url": "https://www.....",
+          "addressUrl": "https://.",
+          "address": "some text....",
+          "workDays": [
+            {
+              "isOpen": true,
+              "from": "11:00",
+              "to": "16:00"
+            }
+          ]
+        }
+      },
+      "GetNews": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "title": "some text....",
+          "url": "https://www.....",
+          "description": "some text....",
+          "date": "2022-08-12T00:00:00.000Z"
+        }
+      },
       "GetAllNotice": {
         "type": "object",
         "properties": {
@@ -936,33 +988,36 @@
         "example": {
           "success": true,
           "message": "Data found with this ID",
-          "notice":[ {
-            "_id": "63029a9e67447e95c6d80cee",
-            "type_of_pet": "shinshila",
-            "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
-            "district": "shinshila",
-            "description": "shinshila",
-            "userContacts": "Kiev, Nafanya, +3.....111111",
-            "price": "12366",
-            "owner": "62ff62db76172b42dd276f3a",
-            "category": "Sell",
-            "createdAt": "2022-08-21T20:50:38.508Z",
-            "updatedAt": "2022-08-21T20:50:38.508Z",
-            "__v": 0
-          }, {
-            "_id": "63029a9e67447e95c6d81cee",
-            "type_of_pet": "shinshila1",
-            "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
-            "district": "shinshila",
-            "description": "shinshila1",
-            "userContacts": "Kiev, Nafanya, +3.....111111",
-            "price": "12366",
-            "owner": "62ff62db76172b42dd276f3a",
-            "category": "Sell",
-            "createdAt": "2022-08-21T20:50:38.508Z",
-            "updatedAt": "2022-08-21T20:50:38.508Z",
-            "__v": 0
-          }]
+          "notice": [
+            {
+              "_id": "63029a9e67447e95c6d80cee",
+              "type_of_pet": "shinshila",
+              "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
+              "district": "shinshila",
+              "description": "shinshila",
+              "userContacts": "Kiev, Nafanya, +3.....111111",
+              "price": "12366",
+              "owner": "62ff62db76172b42dd276f3a",
+              "category": "Sell",
+              "createdAt": "2022-08-21T20:50:38.508Z",
+              "updatedAt": "2022-08-21T20:50:38.508Z",
+              "__v": 0
+            },
+            {
+              "_id": "63029a9e67447e95c6d81cee",
+              "type_of_pet": "shinshila1",
+              "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
+              "district": "shinshila",
+              "description": "shinshila1",
+              "userContacts": "Kiev, Nafanya, +3.....111111",
+              "price": "12366",
+              "owner": "62ff62db76172b42dd276f3a",
+              "category": "Sell",
+              "createdAt": "2022-08-21T20:50:38.508Z",
+              "updatedAt": "2022-08-21T20:50:38.508Z",
+              "__v": 0
+            }
+          ]
         }
       },
       "NoticeRequest": {
