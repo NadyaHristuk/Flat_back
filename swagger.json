@@ -23,20 +23,16 @@
       "description": "Authorization and info endpoints"
     },
     {
-      "name": "Notice",
-      "description": "Notice endpoints"
+      "name": "Personal-plan",
+      "description": "Personal plan endpoints"
     },
     {
-      "name": "Pet",
-      "description": "Pet endpoints"
+      "name": "Cashflow",
+      "description": "Cashflow endpoints"
     },
     {
-      "name": "Sponsors-info",
-      "description": "Sponsors-info endpoints"
-    },
-    {
-      "name": "News",
-      "description": "News endpoints"
+      "name": "Dynamics",
+      "description": "Dynamics endpoints"
     }
   ],
   "paths": {
