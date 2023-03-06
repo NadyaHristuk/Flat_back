@@ -1,15 +1,15 @@
 const { Schema, model } = require("mongoose");
 
-const startBalanceSchema = Schema({
-  bothSalary: Number,
+const personslPlanSchema = Schema({
+  salary: Number,
   passiveIncome: Number,
   savings: Number,
   cost: Number,
   footage: Number,
-  percentagePerMounth: Number,
+  procent: Number,
   year: Number,
   month: Number,
-  previousDayLimit: { type: Number, default: 0 },
+  dailyLimit: { type: Number, default: 0 },
   monthLimit: { type: Number, default: 0 },
   owner: {
     type: Schema.Types.ObjectId,
@@ -17,6 +17,6 @@ const startBalanceSchema = Schema({
   },
 });
 
-const startBalance = model("startBalance", startBalanceSchema);
+const startBalance = model("personslPlan", personslPlanSchema);
 
-module.exports = startBalance;
+module.exports = PersonslPlan;

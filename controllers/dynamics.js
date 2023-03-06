@@ -1,5 +1,5 @@
 const Transaction = require("../models/transaction");
-const startBalance = require("../models/startBalance");
+const startBalance = require("../models/personalPlan");
 
 const byYear = async (req, res) => {};
 

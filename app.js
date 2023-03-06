@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 require("dotenv").config();
 
-const personslPlanRouter = require("./routes/personslPlan");
+const personalPlanRouter = require("./routes/personalPlan");
 const usersRouter = require("./routes/users");
 const cashflowRouter = require("./routes/cashflow");
 const dymamicsRouter = require("./routes/dymamicsRouter");
@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/api/user", usersRouter);
-app.use("/api/personal-plan", personslPlanRouter);
+app.use("/api/personal-plan", personalPlanRouter);
 app.use("/api/cashflow", cashflowRouter);
 app.use("/api/dynamics", dymamicsRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
