@@ -57,14 +57,24 @@ const logout = async (req, res) => {
   res.status(204).send();
 }
 
-module.exports.userInfo = async (req, res) => {
+const userInfo = async (req, res) => {
   const _id = req.user;
   const user = await User.findById(_id, {
     createdAt: 0,
     updatedAt: 0,
     password: 0,
+    token: 0
   })
   res.status(200).json(user);
 };
 
-module.exports = {signup, login, logout};
+const addBalance = async (req, res) => {
+  const _id = req.user;
+  const {balance} = req.body;
+  const upUser = await User.findByIdAndUpdate(_id, {
+    balance
+  }, {new: true})
+  res.status(200).json(upUser.balance);
+};
+
+module.exports = {signup, login, logout, userInfo, addBalance};

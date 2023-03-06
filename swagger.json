@@ -157,7 +157,7 @@
       }
     },
     "/api/user/addBalance": {
-      "post": {
+      "put": {
         "tags": [
           "UserAuth"
         ],
@@ -169,7 +169,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
+                "$ref": "#/components/schemas/AddBalanceRequest"
               }
             }
           }
@@ -180,7 +180,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/AddBalanceResponse"
                 }
               }
             }
@@ -779,6 +779,31 @@
         },
         "example": {
           "token": "xxxxx.yyyyy.zzzzz"
+        }
+      },
+      "AddBalanceRequest": {
+        "required": [
+          "balance"
+        ],
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 100000
+          }
+        }
+      },
+      "AddBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "tbalance": {
+            "type": "number",
+            "description": "User's balance"
+          }
+        },
+        "example": {
+          "balance": 100000
         }
       },
       "GetUserInfo": {
