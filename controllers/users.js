@@ -32,7 +32,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     const passCompare = await bcrypt.compareSync(password, user.password);
-    if (!user || passCompare) {
+    if (!user || !passCompare) {
       throw new Unauthorized('Email or password is wrong');
     }
     const payload = {

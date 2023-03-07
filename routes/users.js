@@ -14,6 +14,6 @@ router.get("/logout", authenticate, ctrlWrapper(ctrl.logout));
 
 router.get("/info", authenticate, ctrlWrapper(ctrl.userInfo));
 
-router.put("/addBalance", authenticate, ctrlWrapper(ctrl.logout));
+router.put("/addBalance", authenticate, ctrlWrapper(ctrl.addBalance));
 
 module.exports = router;
