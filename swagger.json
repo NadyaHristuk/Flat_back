@@ -230,6 +230,213 @@
         }
       }
     },
+    "/api/personal-plan/pre": {
+      "post": {
+        "tags": [
+          "Personal-plan"
+        ],
+        "summary": "Post personal plan",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Personal plan's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrePersonalPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrePersonalPlanResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/personal-plan": {
+      "post": {
+        "tags": [
+          "Personal-plan"
+        ],
+        "summary": "Post personal plan",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Personal plan's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPlanResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Personal-plan"
+        ],
+        "summary": "Get personal plan",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPlanResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Personal-plan"
+        ],
+        "summary": "Post personal plan",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Personal plan's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPlanResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/personal-plan/daily-limit": {
+      "get": {
+        "tags": [
+          "Personal-plan"
+        ],
+        "summary": "Get daily limit",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDailyLimit"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/notice": {
       "get": {
         "tags": [
@@ -803,6 +1010,210 @@
         }
       },
       "GetUserInfo": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "balance": {
+                "type": "number",
+                "description": "User's balance"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "One",
+          "email": "1@gmail.com",
+          "balance": 100000
+        }
+      },
+      "PrePersonalPlanRequest": {
+        "type": "object",
+        "required": [
+          "salary",
+          "passiveIncome",
+          "savings",
+          "cost",
+          "footage",
+          "procent"
+        ],
+        "properties": {
+          "salary": {
+            "type": "number",
+            "description": "User's salary",
+            "example": 30000
+          },
+          "passiveIncome": {
+            "type": "number",
+            "description": "User's passive income",
+            "example": 30000
+          },
+          "savings": {
+            "type": "number",
+            "description": "User's savings",
+            "example": 30000
+          },
+          "cost": {
+            "type": "number",
+            "description": "User's cost",
+            "example": 30000
+          },
+          "footage": {
+            "type": "number",
+            "description": "User's footage",
+            "example": 30000
+          },
+          "procent": {
+            "type": "number",
+            "description": "User's procent",
+            "example": 30000
+          }
+        }
+      },
+      "PrePersonalPlanResponse": {
+        "type": "object",
+        "properties": {
+          "salary": {
+            "type": "number",
+            "description": "User's salary"
+          },
+          "passiveIncome": {
+            "type": "number",
+            "description": "User's passive income"
+          },
+          "savings": {
+            "type": "number",
+            "description": "User's savings"
+          },
+          "cost": {
+            "type": "number",
+            "description": "User's cost"
+          },
+          "footage": {
+            "type": "number",
+            "description": "User's footage"
+          },
+          "procent": {
+            "type": "number",
+            "description": "User's procent"
+          }
+        },
+        "example": {
+          "salary": 30000,
+          "passiveIncome": 30000,
+          "savings": 30000,
+          "cost": 30000,
+          "footage": 30000,
+          "procent": 30000,
+          "year": 30000,
+          "month": 30000,
+          "monthLimit": 30000,
+          "dailyLimit": 30000
+        }
+      },
+      "PersonalPlanRequest": {
+        "type": "object",
+        "required": [
+          "salary",
+          "passiveIncome",
+          "savings",
+          "cost",
+          "footage",
+          "procent"
+        ],
+        "properties": {
+          "salary": {
+            "type": "number",
+            "description": "User's salary",
+            "example": 30000
+          },
+          "passiveIncome": {
+            "type": "number",
+            "description": "User's passive income",
+            "example": 30000
+          },
+          "savings": {
+            "type": "number",
+            "description": "User's savings",
+            "example": 30000
+          },
+          "cost": {
+            "type": "number",
+            "description": "User's cost",
+            "example": 30000
+          },
+          "footage": {
+            "type": "number",
+            "description": "User's footage",
+            "example": 30000
+          },
+          "procent": {
+            "type": "number",
+            "description": "User's procent",
+            "example": 30000
+          }
+        }
+      },
+      "PersonalPlanResponse": {
+        "type": "object",
+        "properties": {
+          "salary": {
+            "type": "number",
+            "description": "User's salary"
+          },
+          "passiveIncome": {
+            "type": "number",
+            "description": "User's passive income"
+          },
+          "savings": {
+            "type": "number",
+            "description": "User's savings"
+          },
+          "cost": {
+            "type": "number",
+            "description": "User's cost"
+          },
+          "footage": {
+            "type": "number",
+            "description": "User's footage"
+          },
+          "procent": {
+            "type": "number",
+            "description": "User's procent"
+          },
+          "_id": {
+            "type": "string"
+          },
+          "__v": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "salary": 30000,
+          "passiveIncome": 30000,
+          "savings": 30000,
+          "cost": 30000,
+          "footage": 30000,
+          "procent": 30000,
+          "year": 30000,
+          "month": 30000,
+          "monthLimit": 30000,
+          "dailyLimit": 30000,
+          "_id": "62ff62db76172b42dd276f3a",
+          "__v": 0
+        }
+      },
+      "GetDailyLimit": {
         "type": "object",
         "properties": {
           "user": {
