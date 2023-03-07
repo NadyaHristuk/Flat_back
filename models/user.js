@@ -20,7 +20,7 @@ const userSchema = new Schema({
     default: null,
   },
   balance: {
-    type: Number,
+    type: Number
   }
 }, { versionKey: false, timestamps: true });
 
