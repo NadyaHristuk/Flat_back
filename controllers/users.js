@@ -15,7 +15,7 @@ const signup = async(req, res, next) => {
       throw new Conflict(`Email ${email} in use`);
     }
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-   await User.create({ email, password: hashPassword});
+   await User.create({ name, email, password: hashPassword});
 
         res.status(201).json({
           name,

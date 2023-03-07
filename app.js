@@ -27,6 +27,7 @@ app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
 app.use((err, req, res, next) => {
+  console.log(err)
   const { status = 500, message = "Smth wrong" } = err;
   res.status(status).json({ message });
 });
