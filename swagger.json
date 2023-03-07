@@ -158,6 +158,11 @@
           "UserAuth"
         ],
         "summary": "User authentication",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "requestBody": {
           "description": "Authentication's object",
@@ -437,12 +442,12 @@
         }
       }
     },
-    "/notice": {
+    "/api/cashflow": {
       "get": {
         "tags": [
-          "Notice"
+          "Cashflow"
         ],
-        "summary": "Get list of categories",
+        "summary": "Get list of transactions",
         "security": [
           {
             "Bearer": []
@@ -455,7 +460,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
+                  "$ref": "#/components/schemas/GetTransactions"
                 }
               }
             }
@@ -472,7 +477,7 @@
       },
       "post": {
         "tags": [
-          "Notice"
+          "Cashflow"
         ],
         "summary": "Post notice",
         "security": [
@@ -482,12 +487,12 @@
         ],
         "parameters": [],
         "requestBody": {
-          "description": "Notece's object",
+          "description": "Transaction's object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PetRequest"
+                "$ref": "#/components/schemas/CashflowRequest"
               }
             }
           }
@@ -498,7 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PetResponse"
+                  "$ref": "#/components/schemas/CashflowResponse"
                 }
               }
             }
@@ -514,41 +519,12 @@
         }
       }
     },
-    "/notice/category": {
+    "/api/cashflow/{id}": {
       "get": {
         "tags": [
-          "Notice"
+          "Cashflow"
         ],
-        "summary": "Get list of categories",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAllNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/notice/{id}": {
-      "get": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Get one notice",
+        "summary": "Get one transaction",
         "parameters": [
           {
             "in": "path",
@@ -558,7 +534,7 @@
               "type": "integer",
               "minimum": 1
             },
-            "description": "The Notice ID"
+            "description": "The Transaction ID"
           }
         ],
         "responses": {
@@ -567,7 +543,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
+                  "$ref": "#/components/schemas/CashflowResponse"
                 }
               }
             }
@@ -584,9 +560,9 @@
       },
       "delete": {
         "tags": [
-          "Notice"
+          "Cashflow"
         ],
-        "summary": "Get list of categories",
+        "summary": "del one transaction",
         "security": [
           {
             "Bearer": []
@@ -601,7 +577,7 @@
               "type": "integer",
               "minimum": 1
             },
-            "description": "The Notice ID"
+            "description": "The Transaction ID"
           }
         ],
         "responses": {
@@ -610,288 +586,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/notice/selected": {
-      "get": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Get list of categories",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/notice/selected/{id}": {
-      "post": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Post selected notice",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "description": "The Notice ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Notece's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NoticeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Notice"
-        ],
-        "summary": "Delete selected notice",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "description": "The Notice ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetOneNotice"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/pet": {
-      "post": {
-        "tags": [
-          "Pet"
-        ],
-        "summary": "Post pet",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "Notece's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PetRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PetResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/pet/{id}": {
-      "delete": {
-        "tags": [
-          "Pet"
-        ],
-        "summary": "Delete selected pet",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "description": "The Notice ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PetResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/sponsors-info": {
-      "get": {
-        "tags": [
-          "Sponsors-info"
-        ],
-        "summary": "Get list of sponsors",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSponsorsInfo"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/news": {
-      "get": {
-        "tags": [
-          "News"
-        ],
-        "summary": "Get list of news",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetNews"
+                  "$ref": "#/components/schemas/CashflowResponse"
                 }
               }
             }
@@ -1241,6 +936,129 @@
           "balance": 100000
         }
       },
+      "CashflowRequest": {
+        "type": "object",
+        "required": [
+          "type",
+          "category",
+          "coment",
+          "sum"
+        ],
+        "properties": {
+          "type": {
+            "type": "boolean",
+            "description": "User's type of cashflow",
+            "example": true
+          },
+          "category": {
+            "type": "string",
+            "description": "User's category of cashflow",
+            "example": "Products"
+          },
+          "coment": {
+            "type": "string",
+            "description": "User's coment of cashflow",
+            "example": "milk"
+          },
+          "sum": {
+            "type": "number",
+            "description": "User's sum of cashflow",
+            "example": 30000
+          }
+        }
+      },
+      "CashflowResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "boolean",
+            "description": "User's type of cashflow"
+          },
+          "category": {
+            "type": "string",
+            "description": "User's category of cashflow"
+          },
+          "coment": {
+            "type": "string",
+            "description": "User's coment of cashflow"
+          },
+          "sum": {
+            "type": "number",
+            "description": "User's sum of cashflow"
+          },
+          "date": {
+            "type": "string"
+          },
+          "month": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "_id": {
+            "type": "string"
+          },
+          "__v": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "type": true,
+          "category": "Products",
+          "coment": "milk",
+          "sum": 30000,
+          "date": "2022-08-21T20:50:38.508Z",
+          "_id": "62ff62db76172b42dd276f3a",
+          "__v": 0
+        }
+      },
+      "GetTransactions": {
+        "type": "object",
+        "properties": {
+          "notice": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "boolean",
+                  "description": "User's type of cashflow"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "User's category of cashflow"
+                },
+                "coment": {
+                  "type": "string",
+                  "description": "User's coment of cashflow"
+                },
+                "sum": {
+                  "type": "number",
+                  "description": "User's sum of cashflow"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "month": {
+                  "type": "string"
+                },
+                "year": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "transactionByMonth": []
+        }
+      },
       "GetSponsorsInfo": {
         "type": "array",
         "items": {
@@ -1567,108 +1385,6 @@
             "createdAt": "2022-08-21T20:50:38.508Z",
             "updatedAt": "2022-08-21T20:50:38.508Z",
             "__v": 0
-          }
-        }
-      },
-      "UpdateUserRequest": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string"
-          },
-          "serSelectedNotices": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string"
-                },
-                "type_of_pet": {
-                  "type": "string"
-                },
-                "animals_photos": {
-                  "type": "string"
-                },
-                "district": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "userContacts": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "string"
-                },
-                "owner": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "__v": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "category": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "example": {
-          "birthday": "2010-04-16",
-          "city": "Mariupol",
-          "phone": "+380971234567",
-          "userImgUrl": "image.jpg"
-        }
-      },
-      "UpdateUserResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/GetUserInfo"
-          }
-        },
-        "example": {
-          "status": "success",
-          "user": {
-            "_id": "62ff62db76172b42dd276f3a",
-            "name": "Nafanya",
-            "email": "test@google.com",
-            "password": "$2b$10$NWMjWI/oTY62MhPjA.kYMuum6IOZRSab0.4RQV18jPKmWq0w.zrnm",
-            "createdAt": "2022-08-19T10:15:55.350Z",
-            "updatedAt": "2022-08-21T19:10:18.219Z",
-            "__v": 0,
-            "birthday": "2010-04-16",
-            "city": "Mariupol",
-            "phone": "+380971234567",
-            "userImgUrl": "https://res.cloudinary.com/nafin13/image/upload/v1661109019/gc4lfdok6mmzc51acxsi.jpg",
-            "userPets": [
-              "6301ce3d86e6a083b7498ca2",
-              "6301cf6aef11bdf5b0f34cae",
-              "630282faedee5dcf51e15c78"
-            ],
-            "userNotices": [
-              "6302828cedee5dcf51e15c72"
-            ]
           }
         }
       },

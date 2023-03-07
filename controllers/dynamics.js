@@ -1,4 +1,4 @@
-const Transaction = require("../models/transaction");
+const Transaction = require("../models/cashflow");
 const startBalance = require("../models/personalPlan");
 
 const byYear = async (req, res) => {};

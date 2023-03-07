@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 const moment = require("moment");
 
-const transactionSchema = Schema({
+const cashflowSchema = Schema({
+  type: Boolean,
   category: String,
   coment: String,
   sum: Number,
@@ -9,10 +10,10 @@ const transactionSchema = Schema({
     type: Date,
     default: Date.now,
   },
-    month: {
+  month: {
         type: String,
        default: moment(new Date()).format("MMM"),},
-    year: {
+  year: {
         type: String,
        default: moment(new Date()).format("YYYY"),},
   owner: {
@@ -21,6 +22,6 @@ const transactionSchema = Schema({
   },
 });
 
-const Transaction = model("transaction", transactionSchema);
+const Cashflow = model("cashflow", cashflowSchema);
 
-module.exports = Transaction;
+module.exports = Cashflow;

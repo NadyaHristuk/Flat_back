@@ -1,6 +1,5 @@
 const moment = require("moment");
-const Transaction = require("../models/transaction");
-const { find } = require("../models/user");
+const Transaction = require("../models/cashflow");
 const User = require("../models/user");
 
 const preTransaction = async (req, res) => {

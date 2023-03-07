@@ -6,8 +6,9 @@ const {
   transactionDelete,
   transactionByCategory,
   preTransaction,
-} = require("../controllers/transaction");
+} = require("../controllers/cashflow");
 const { authenticate } = require("../middlewares");
+
 router.get("/presaving", authenticate, preTransaction);
 router.post("/", authenticate, createTransaction);
 router.get("/", authenticate, getTransaction);
