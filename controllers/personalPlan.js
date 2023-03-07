@@ -32,7 +32,7 @@ const addPersonalPlan = async (req, res) => {
   const monthLimit = salary-(salary * (procent / 100));
   const dailyLimit = procent + monthLimit / days;
 
-  const newBalance = await startBalance.create({
+  const newBalance = await personalPlan.create({
     salary, passiveIncome, savings, cost, footage, procent,
     year,
     month,
@@ -65,7 +65,7 @@ const patchPersonalPlan = async (req, res) => {
 
 const getDailyLimit = async (req, res) => {
   const { _id } = req.user;
-  const currentBalance = await startBalance.findOne({ owner: _id });
+  const currentBalance = await personalPlan.findOne({ owner: _id });
   const days = moment().daysInMonth();
   const monthLimit = currentBalance.bothSalary-(currentBalance.bothSalary * (currentBalance.percentagePerMounth / 100));
   const dailyLimit = currentBalance.previousDayLimit + monthLimit / days;
