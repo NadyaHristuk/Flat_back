@@ -453,7 +453,24 @@
             "Bearer": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "month",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The month of transactions you want to get"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The year of transactions you want to get"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -479,7 +496,7 @@
         "tags": [
           "Cashflow"
         ],
-        "summary": "Post notice",
+        "summary": "Post transaction",
         "security": [
           {
             "Bearer": []
@@ -1007,6 +1024,8 @@
           "category": "Products",
           "coment": "milk",
           "sum": 30000,
+          "month": "Feb",
+          "year": "2023",
           "date": "2022-08-21T20:50:38.508Z",
           "_id": "62ff62db76172b42dd276f3a",
           "__v": 0
@@ -1056,7 +1075,15 @@
           }
         },
         "example": {
-          "transactionByMonth": []
+          "type": true,
+          "category": "Products",
+          "coment": "milk",
+          "sum": 30000,
+          "month": "Feb",
+          "year": "2023",
+          "date": "2022-08-21T20:50:38.508Z",
+          "_id": "62ff62db76172b42dd276f3a",
+          "__v": 0
         }
       },
       "GetSponsorsInfo": {
