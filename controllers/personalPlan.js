@@ -44,31 +44,31 @@ const addPersonalPlan = async (req, res) => {
 
 const getPersonalPlan = async (req, res) => {
   const { _id } = req.user;
-  const personalPlan = await personalPlan.findOne({ owner: _id });
+  const data = await personalPlan.findOne({ owner: _id }).lean();
   const days = moment().daysInMonth();
-  const monthLimit = personalPlan.salary-(personalPlan.salary * (personalPlan.procent / 100));
-  const dailyLimit = personalPlan.procent + monthLimit / days;
-  res.send({...personalPlan, monthLimit, dailyLimit});
+  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const dailyLimit = data.procent + monthLimit / days;
+  res.send({...data, monthLimit, dailyLimit});
 };
 
 const patchPersonalPlan = async (req, res) => {
   const { _id } = req.user;
-  const personalPlan = await personalPlan.findOneAndUpdate(
+  const data = await personalPlan.findOneAndUpdate(
     { owner: _id },
     { ...req.body },
     { new: true }
   );
-  const monthLimit = personalPlan.salary-(personalPlan.salary * (personalPlan.procent / 100));
-  const dailyLimit = personalPlan.procent + monthLimit / days;
-  res.send({...personalPlan, monthLimit, dailyLimit});
+  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const dailyLimit = data.procent + monthLimit / days;
+  res.send({...data, monthLimit, dailyLimit});
 };
 
 const getDailyLimit = async (req, res) => {
   const { _id } = req.user;
-  const currentBalance = await personalPlan.findOne({ owner: _id });
+  const data = await personalPlan.findOne({ owner: _id });
   const days = moment().daysInMonth();
-  const monthLimit = currentBalance.bothSalary-(currentBalance.bothSalary * (currentBalance.percentagePerMounth / 100));
-  const dailyLimit = currentBalance.previousDayLimit + monthLimit / days;
+  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const dailyLimit = data.procent + monthLimit / days;
   res.json({ dailyLimit });
 };
 
