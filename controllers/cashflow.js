@@ -2,7 +2,6 @@ const moment = require("moment");
 const Transaction = require("../models/cashflow");
 const User = require("../models/user");
 const personalPlan = require("../models/personalPlan");
-const moment = require("moment");
 
 const preTransaction = async (req, res) => {
   const { _id } = req.user;
