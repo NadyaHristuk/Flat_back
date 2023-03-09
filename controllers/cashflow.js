@@ -1,10 +1,17 @@
 const moment = require("moment");
 const Transaction = require("../models/cashflow");
 const User = require("../models/user");
+const personalPlan = require("../models/personalPlan");
+const moment = require("moment");
 
 const preTransaction = async (req, res) => {
-  const { category, coment, sum } = req.body;
-  const { _id, balance } = req.user;
+  const { _id } = req.user;
+
+  const data = await personalPlan.findOne({ owner: _id });
+
+  const days = moment().daysInMonth();
+  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const dailyLimit = data.procent + monthLimit / days;
 
   const totalByMounth = await Transaction.aggregate([
     {
@@ -49,7 +56,8 @@ const preTransaction = async (req, res) => {
       },
     },
   ]);
-  res.json({ totalByMounth, totalByDay });
+
+  res.json({ totalByMounth, totalByDay, monthLimit, dailyLimit });
 };
 
 async function createTransaction(req, res) {

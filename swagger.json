@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "version": "1.0.0",
-    "title": "API 1.0.0",
+    "title": "API 17.0.0",
     "description": "Showing off swagger-ui-express",
     "license": {
       "name": "MIT",
@@ -442,7 +442,91 @@
         }
       }
     },
+    "/api/cashflow/presaving": {
+      "get": {
+        "tags": [
+          "Cashflow"
+        ],
+        "summary": "Get totalByMounth, totalByDay, monthLimit, dailyLimit",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPresaving"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/cashflow": {
+      "post": {
+        "tags": [
+          "Cashflow"
+        ],
+        "summary": "Post transaction",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Transaction's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CashflowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CashflowResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      },
       "get": {
         "tags": [
           "Cashflow"
@@ -478,49 +562,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetTransactions"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Cashflow"
-        ],
-        "summary": "Post transaction",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "Transaction's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CashflowRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CashflowResponse"
                 }
               }
             }
@@ -828,9 +869,7 @@
           "footage": 30000,
           "procent": 30000,
           "year": 30000,
-          "month": 30000,
-          "monthLimit": 30000,
-          "dailyLimit": 30000
+          "month": 30000
         }
       },
       "PersonalPlanRequest": {
@@ -919,8 +958,6 @@
           "procent": 30000,
           "year": 30000,
           "month": 30000,
-          "monthLimit": 30000,
-          "dailyLimit": 30000,
           "_id": "62ff62db76172b42dd276f3a",
           "__v": 0
         }
@@ -928,29 +965,45 @@
       "GetDailyLimit": {
         "type": "object",
         "properties": {
-          "user": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "User's name"
-              },
-              "email": {
-                "type": "string",
-                "description": "User's email",
-                "format": "email"
-              },
-              "balance": {
-                "type": "number",
-                "description": "User's balance"
-              }
-            }
+          "monthLimit": {
+            "type": "number",
+            "description": "User's monthLimit"
+          },
+          "dailyLimit": {
+            "type": "number",
+            "description": "User's dailyLimit"
           }
         },
         "example": {
-          "name": "One",
-          "email": "1@gmail.com",
-          "balance": 100000
+          "monthLimit": 30,
+          "dailyLimit": 300
+        }
+      },
+      "GetPresaving": {
+        "type": "object",
+        "properties": {
+          "monthLimit": {
+            "type": "number",
+            "description": "User's monthLimit"
+          },
+          "dailyLimit": {
+            "type": "number",
+            "description": "User's dailyLimit"
+          },
+          "totalByMounth": {
+            "type": "number",
+            "description": "User's totalByMounth"
+          },
+          "totalByDay": {
+            "type": "number",
+            "description": "User's totalByDay"
+          }
+        },
+        "example": {
+          "monthLimit": 30,
+          "dailyLimit": 300,
+          "totalByMounth": 30,
+          "totalByDay": 300
         }
       },
       "CashflowRequest": {
@@ -963,9 +1016,9 @@
         ],
         "properties": {
           "type": {
-            "type": "boolean",
+            "type": "string",
             "description": "User's type of cashflow",
-            "example": true
+            "example": "income"
           },
           "category": {
             "type": "string",
@@ -988,7 +1041,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "boolean",
+            "type": "string",
             "description": "User's type of cashflow"
           },
           "category": {
@@ -1007,10 +1060,10 @@
             "type": "string"
           },
           "month": {
-            "type": "string"
+            "type": "number"
           },
           "year": {
-            "type": "string"
+            "type": "number"
           },
           "_id": {
             "type": "string"
@@ -1020,12 +1073,10 @@
           }
         },
         "example": {
-          "type": true,
+          "type": "income",
           "category": "Products",
           "coment": "milk",
           "sum": 30000,
-          "month": "Feb",
-          "year": "2023",
           "date": "2022-08-21T20:50:38.508Z",
           "_id": "62ff62db76172b42dd276f3a",
           "__v": 0
