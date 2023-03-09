@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const moment = require("moment");
 
 const cashflowSchema = Schema({
-  type: Boolean,
+  type: String,
   category: String,
   comment: String,
   sum: Number,

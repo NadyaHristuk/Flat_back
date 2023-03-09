@@ -60,12 +60,13 @@ const preTransaction = async (req, res) => {
 };
 
 async function createTransaction(req, res) {
-  const { category, comment, sum } = req.body;
+  const { category, comment, sum, type } = req.body;
   const { _id, balance } = req.user;
 
   const newTransaction = await Transaction.create({
     category,
     comment,
+    type,
     sum,
     owner: _id,
   });
@@ -86,7 +87,7 @@ async function getTransaction(req, res) {
 
   const allTransaction = await Transaction.aggregate([
     {
-      $match: options,
+      $match: { owner: _id, type: "expense" },
     },
   ]);
 
