@@ -60,35 +60,44 @@ const preTransaction = async (req, res) => {
 };
 
 async function createTransaction(req, res) {
-  const { category, coment, sum } = req.body;
+  const { category, comment, sum } = req.body;
   const { _id, balance } = req.user;
+
   const newTransaction = await Transaction.create({
     category,
-    coment,
+    comment,
     sum,
     owner: _id,
   });
+
   await User.findByIdAndUpdate(_id, {
     balance: balance - sum,
   });
+
   res.json(newTransaction);
 }
 
 async function getTransaction(req, res) {
   const { year, month } = req.query;
   const { _id } = req.user;
+  const options = { owner: _id, type: "expense" }
 
-  const transactionByMonth = await Transaction.find({
-    owner: _id,
-    month,
-    year,
-  });
-  res.json(transactionByMonth);
+  if(year && month){options.date = new Date(year, month)}
+
+  const allTransaction = await Transaction.aggregate([
+    {
+      $match: options,
+    },
+  ]);
+
+  res.json(allTransaction);
 }
 
 async function puchTransaction(req, res) {
   const { id } = req.params;
+
   const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true });
+
   res.json(transactionUpdate);
 }
 

@@ -4,18 +4,12 @@ const moment = require("moment");
 const cashflowSchema = Schema({
   type: Boolean,
   category: String,
-  coment: String,
+  comment: String,
   sum: Number,
   date: {
     type: Date,
     default: Date.now,
   },
-  month: {
-        type: String,
-       default: moment(new Date()).format("MMM"),},
-  year: {
-        type: String,
-       default: moment(new Date()).format("YYYY"),},
   owner: {
     type: Schema.Types.ObjectId,
     ref: "user",
