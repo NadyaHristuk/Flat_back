@@ -33,7 +33,7 @@ const addPersonalPlan = async (req, res) => {
     salary, passiveIncome, savings, cost, footage, procent,
     year,
     month,
-    monthLimit, dailyLimit, owner:_id
+   owner:_id
   });
 
   res.json({ newBalance });
@@ -42,22 +42,24 @@ const addPersonalPlan = async (req, res) => {
 const getPersonalPlan = async (req, res) => {
   const { _id } = req.user;
   const data = await personalPlan.findOne({ owner: _id }).lean();
-  res.send({...data});
+  res.send(data);
 };
 
 const patchPersonalPlan = async (req, res) => {
   const { _id } = req.user;
+  const {salary, passiveIncome, cost, procent} = req.body;
+  const {} = await personalPlan.findOne({ owner: _id }).lean();
   const monthSalary =
   (cost - savings) / ((salary + passiveIncome) * (procent  / 100));
    const year = Math.floor(monthSalary / 12);
    const month = Math.floor(monthSalary % 12);
   const data = await personalPlan.findOneAndUpdate(
     { owner: _id },
-    { ...req.body },
+    { ...req.body, year: year, month: month },
     { new: true }
   );
  
-  res.send({...data});
+  res.send(data);
 };
 
 const getDailyLimit = async (req, res) => {
