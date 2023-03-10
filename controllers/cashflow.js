@@ -12,7 +12,7 @@ const preTransaction = async (req, res) => {
   const data = await personalPlan.findOne({ owner: _id });
 
   const days = moment().daysInMonth();
-  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const monthLimit = (data.salary + data.passiveIncome)-((data.salary + data.passiveIncome) * (data.procent / 100));
   const dailyLimit = data.procent + monthLimit / days;
 
   const totalByMounth = await Transaction.aggregate([
@@ -99,7 +99,7 @@ async function getTransaction(req, res) {
 
   let { year, month } = req.query;
   if ( month > 12 || month < 1 ){
-    throw BadRequest('Bad query request!');}
+    throw new BadRequest('Bad query request!');}
 
 if (year && month){
   year = Number(year);

@@ -1,5 +1,7 @@
 const personalPlan = require("../models/personalPlan");
+const { BadRequest, Conflict } = require('http-errors');
 const moment = require("moment");
+const { RequestError } = require('../helpers');
 
 const prePersonalPlan = async (req, res) => {
   const { salary, passiveIncome, savings, cost, footage, procent } = req.body;
@@ -8,15 +10,11 @@ const prePersonalPlan = async (req, res) => {
  (cost - savings) / ((salary + passiveIncome) * (procent  / 100));
   const year = Math.floor(monthSalary / 12);
   const month = Math.floor(monthSalary % 12);
-  const days = moment().daysInMonth();
-  const monthLimit = salary-(salary * (procent / 100));
-  const dailyLimit = procent + monthLimit / days;
 
   res.json({
     salary, passiveIncome, savings, cost, footage, procent,
     year,
-    month,
-    monthLimit, dailyLimit,
+    month
   });
 };
 
@@ -26,7 +24,7 @@ const addPersonalPlan = async (req, res) => {
   const data = await personalPlan.findOne({ owner: _id }).lean();
 
   if(data){
-    throw BadRequest('You already have a personal plan!');
+ return res.status(400).send('You already have a personal plan!')
   }
  
   const { salary, passiveIncome, savings, cost, footage, procent } = req.body;
@@ -39,9 +37,9 @@ const addPersonalPlan = async (req, res) => {
   const newBalance = await personalPlan.create({
     salary, passiveIncome, savings, cost, footage, procent,
    owner:_id
-  }).lean();
+  });
 
-  res.json({ ...newBalance, year, month });
+  res.json({...newBalance._doc, year, month} );
 };
 
 const getPersonalPlan = async (req, res) => {
@@ -78,7 +76,7 @@ const getDailyLimit = async (req, res) => {
   const { _id } = req.user;
   const data = await personalPlan.findOne({ owner: _id });
   const days = moment().daysInMonth();
-  const monthLimit = data.salary-(data.salary * (data.procent / 100));
+  const monthLimit = (data.salary + data.passiveIncome)-((data.salary + data.passiveIncome) * (data.procent / 100));
   const dailyLimit = data.procent + monthLimit / days;
   res.json({ monthLimit, dailyLimit });
 };
