@@ -23,21 +23,10 @@ const prePersonalPlan = async (req, res) => {
 const addPersonalPlan = async (req, res) => {
   const { _id } = req.user;
  
-  let data = await personalPlan.findOne({ owner: _id }).lean();
+  const data = await personalPlan.findOne({ owner: _id }).lean();
 
   if(data){
-    data = await personalPlan.findOneAndUpdate(
-      { owner: _id },
-      { ...req.body },
-      { new: true }
-    ).lean();
-
-    const monthSalary =
-    (data.cost - data.savings) / ((data.salary + data.passiveIncome) * (data.procent  / 100));
-     const year = Math.floor(monthSalary / 12);
-     const month = Math.floor(monthSalary % 12);
-    
-    return res.send({...data, year, month});
+    throw BadRequest('You already have a personal plan!');
   }
  
   const { salary, passiveIncome, savings, cost, footage, procent } = req.body;
@@ -59,8 +48,13 @@ const getPersonalPlan = async (req, res) => {
   const { _id } = req.user;
 
   const data = await personalPlan.findOne({ owner: _id }).lean();
+  const monthSalary =
+ (data.cost - data.savings) / ((data.salary + data.passiveIncome) * (data.procent  / 100));
+  const year = Math.floor(monthSalary / 12);
+  const month = Math.floor(monthSalary % 12);
 
-  res.send(data);
+
+  res.send({...data, year, month });
 };
 
 const patchPersonalPlan = async (req, res) => {

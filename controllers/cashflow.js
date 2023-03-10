@@ -1,7 +1,10 @@
 const moment = require("moment");
 const Transaction = require("../models/cashflow");
 const User = require("../models/user");
+const { BadRequest } = require('http-errors');
 const personalPlan = require("../models/personalPlan");
+const mongoose = require("mongoose");
+
 
 const preTransaction = async (req, res) => {
   const { _id } = req.user;
@@ -39,7 +42,17 @@ const preTransaction = async (req, res) => {
 
   const totalByDay = await Transaction.aggregate([
     {
-      $match: { owner: _id },
+      $match: { owner: _id, $expr: {
+        $eq: [
+          new Date().toISOString().slice(0, 10),
+          {
+            $dateToString: {
+              date: "$date",
+              format: "%Y-%m-%d"
+            }
+          }
+        ]
+      }},
     },
     {
       $group: {
@@ -56,7 +69,7 @@ const preTransaction = async (req, res) => {
     },
   ]);
 
-  res.json({ totalByMounth, totalByDay, monthLimit, dailyLimit });
+  res.json({ totalByMounth: totalByMounth[0].amount, totalByDay: totalByDay[0].amount, monthLimit, dailyLimit });
 };
 
 async function createTransaction(req, res) {
@@ -79,15 +92,46 @@ async function createTransaction(req, res) {
 }
 
 async function getTransaction(req, res) {
-  const { year, month } = req.query;
   const { _id } = req.user;
-  const options = { owner: _id, type: "expense" }
 
-  if(year && month){options.date = new Date(year, month)}
+  const opt = { owner: mongoose.Types.ObjectId(_id),
+  type: "expense" }
+
+  let { year, month } = req.query;
+  if ( month > 12 || month < 1 ){
+    throw BadRequest('Bad query request!');}
+
+if (year && month){
+  year = Number(year);
+  month = Number(month);
+
+  const startMonth = month - 1;
+  const endMonth = startMonth === 11 ? 0 : month;
+  const endYear = startMonth === 11 ? year + 1 : year;
+
+  opt.date={
+    $gte: new Date(year, startMonth),
+    $lt: new Date(endYear, endMonth),
+  }
+}
+
+if (!year && !month){
+  opt.$expr = {
+    $eq: [
+      new Date().toISOString().slice(0, 10),
+      {
+        $dateToString: {
+          date: "$date",
+          format: "%Y-%m-%d"
+        }
+      }
+    ]
+  }
+}
 
   const allTransaction = await Transaction.aggregate([
     {
-      $match: { owner: _id, type: "expense" },
+      $match: opt
     },
   ]);
 
