@@ -11,6 +11,10 @@ const preTransaction = async (req, res) => {
 
   const data = await personalPlan.findOne({ owner: _id });
 
+  if(!data){
+    return res.status(400).send('You don`t have a personal plan!')
+  }
+
   const days = moment().daysInMonth();
   const monthLimit = (data.salary + data.passiveIncome)-((data.salary + data.passiveIncome) * (data.procent / 100));
   const dailyLimit = data.procent + monthLimit / days;
@@ -76,7 +80,7 @@ async function createTransaction(req, res) {
   const { category, comment, sum, type } = req.body;
   const { _id, balance } = req.user;
 
-  const newTransaction = await Transaction.create({
+ await Transaction.create({
     category,
     comment,
     type,
@@ -88,7 +92,7 @@ async function createTransaction(req, res) {
     balance: balance - sum,
   });
 
-  res.json(newTransaction);
+  res.json({sum, type,  owner: _id, newBalance: balance - sum});
 }
 
 async function getTransaction(req, res) {
@@ -148,7 +152,9 @@ async function puchTransaction(req, res) {
 
 async function transactionDelete(req, res) {
   const { id } = req.params;
+
   const transactionRemove = await Transaction.findByIdAndDelete(id);
+
   res.json(transactionRemove);
 }
 

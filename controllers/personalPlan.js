@@ -24,7 +24,7 @@ const addPersonalPlan = async (req, res) => {
   const data = await personalPlan.findOne({ owner: _id }).lean();
 
   if(data){
- return res.status(400).send('You already have a personal plan!')
+    return res.status(400).send('You already have a personal plan!')
   }
  
   const { salary, passiveIncome, savings, cost, footage, procent } = req.body;
@@ -46,6 +46,11 @@ const getPersonalPlan = async (req, res) => {
   const { _id } = req.user;
 
   const data = await personalPlan.findOne({ owner: _id }).lean();
+
+  if(!data){
+    return res.status(400).send('You don`t have a personal plan!')
+  }
+
   const monthSalary =
  (data.cost - data.savings) / ((data.salary + data.passiveIncome) * (data.procent  / 100));
   const year = Math.floor(monthSalary / 12);
@@ -63,7 +68,9 @@ const patchPersonalPlan = async (req, res) => {
     { ...req.body },
     { new: true }
   ).lean();
-
+  if(!data){
+    return res.status(400).send('You don`t have a personal plan!')
+  }
   const monthSalary =
   (data.cost - data.savings) / ((data.salary + data.passiveIncome) * (data.procent  / 100));
    const year = Math.floor(monthSalary / 12);
@@ -75,6 +82,9 @@ const patchPersonalPlan = async (req, res) => {
 const getDailyLimit = async (req, res) => {
   const { _id } = req.user;
   const data = await personalPlan.findOne({ owner: _id });
+  if(!data){
+    return res.status(400).send('You don`t have a personal plan!')
+  }
   const days = moment().daysInMonth();
   const monthLimit = (data.salary + data.passiveIncome)-((data.salary + data.passiveIncome) * (data.procent / 100));
   const dailyLimit = data.procent + monthLimit / days;

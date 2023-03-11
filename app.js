@@ -26,9 +26,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
+
 app.use((err, req, res, next) => {
   if (err.status) return res.status(err.status).json({ message: err.message });
-
   res.status(500).json({ message: err.message });
 });
 
