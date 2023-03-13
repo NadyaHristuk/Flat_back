@@ -442,6 +442,47 @@
         }
       }
     },
+    "/api/cashflow/category": {
+      "get": {
+        "tags": [
+          "Cashflow"
+        ],
+        "summary": "Get list of category",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/cashflow/presaving": {
       "get": {
         "tags": [
@@ -509,10 +550,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CashflowResponse"
-                  }
+                  "$ref": "#/components/schemas/GetTransactions"
                 }
               }
             }
@@ -561,7 +599,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTransactions"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CashflowResponse"
+                  }
                 }
               }
             }
@@ -578,44 +619,6 @@
       }
     },
     "/api/cashflow/{id}": {
-      "get": {
-        "tags": [
-          "Cashflow"
-        ],
-        "summary": "Get one transaction",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "description": "The Transaction ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CashflowResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          },
-          "500": {
-            "description": "Server error",
-            "content": {}
-          }
-        }
-      },
       "delete": {
         "tags": [
           "Cashflow"
@@ -648,6 +651,47 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/cashflow/stat": {
+      "get": {
+        "tags": [
+          "Cashflow"
+        ],
+        "summary": "Get list of category",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
           },
           "404": {
             "description": "Not found",
@@ -1059,12 +1103,6 @@
           "date": {
             "type": "string"
           },
-          "month": {
-            "type": "number"
-          },
-          "year": {
-            "type": "number"
-          },
           "_id": {
             "type": "string"
           },
@@ -1073,7 +1111,7 @@
           }
         },
         "example": {
-          "type": "income",
+          "type": "expense",
           "category": "Products",
           "coment": "milk",
           "sum": 30000,
@@ -1091,8 +1129,7 @@
               "type": "object",
               "properties": {
                 "type": {
-                  "type": "boolean",
-                  "description": "User's type of cashflow"
+                  "type": "string"
                 },
                 "category": {
                   "type": "string",
@@ -1109,12 +1146,6 @@
                 "date": {
                   "type": "string"
                 },
-                "month": {
-                  "type": "string"
-                },
-                "year": {
-                  "type": "string"
-                },
                 "_id": {
                   "type": "string"
                 },
@@ -1126,449 +1157,47 @@
           }
         },
         "example": {
-          "type": true,
+          "type": "expense",
           "category": "Products",
           "coment": "milk",
           "sum": 30000,
-          "month": "Feb",
-          "year": "2023",
           "date": "2022-08-21T20:50:38.508Z",
           "_id": "62ff62db76172b42dd276f3a",
           "__v": 0
         }
       },
-      "GetSponsorsInfo": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string"
-            },
-            "addressUrl": {
-              "type": "string"
-            },
-            "address": {
-              "type": "string"
-            },
-            "workDays": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "isOpen": {
-                    "type": "boolean"
-                  },
-                  "from": {
-                    "type": "string"
-                  },
-                  "to": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "example": {
-          "title": "some text....",
-          "url": "https://www.....",
-          "addressUrl": "https://.",
-          "address": "some text....",
-          "workDays": [
-            {
-              "isOpen": true,
-              "from": "11:00",
-              "to": "16:00"
-            }
-          ]
-        }
-      },
-      "GetNews": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "date": {
-              "type": "string"
-            }
-          }
-        },
-        "example": {
-          "title": "some text....",
-          "url": "https://www.....",
-          "description": "some text....",
-          "date": "2022-08-12T00:00:00.000Z"
-        }
-      },
-      "GetAllNotice": {
+      "CategoryResponse": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean"
+          "name": {
+            "type": "string",
+            "description": "name of category"
           },
-          "message": {
-            "type": "string"
-          },
-          "notice": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "birthday": {
-                  "type": "string"
-                },
-                "breed": {
-                  "type": "string"
-                },
-                "location": {
-                  "type": "string"
-                },
-                "sex": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "string"
-                },
-                "imageUrl": {
-                  "type": "string"
-                },
-                "userEmail": {
-                  "type": "string"
-                },
-                "userPhone": {
-                  "type": "string"
-                },
-                "owner": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "__v": {
-                  "type": "number"
-                }
-              }
-            }
-          },
+          "title": {
+            "type": "string",
+            "description": "title of category"
+          }
+        },
+        "example": {
+          "name": "products",
+          "title": "Products"
+        }
+      },
+      "StatResponse": {
+        "type": "object",
+        "properties": {
           "category": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string",
+            "description": "name of category"
+          },
+          "amount": {
+            "type": "number",
+            "description": "title of category"
           }
         },
         "example": {
-          "success": true,
-          "message": "found notice data with this user ID",
-          "notice": [],
-          "category": [
-            "lost-found",
-            "for-free",
-            "sell"
-          ]
-        }
-      },
-      "GetOneNotice": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string"
-          },
-          "notice": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string"
-                },
-                "type_of_pet": {
-                  "type": "string"
-                },
-                "animals_photos": {
-                  "type": "string"
-                },
-                "district": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "userContacts": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "string"
-                },
-                "owner": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "__v": {
-                  "type": "number"
-                }
-              }
-            }
-          }
-        },
-        "example": {
-          "success": true,
-          "message": "Data found with this ID",
-          "notice": [
-            {
-              "_id": "63029a9e67447e95c6d80cee",
-              "type_of_pet": "shinshila",
-              "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
-              "district": "shinshila",
-              "description": "shinshila",
-              "userContacts": "Kiev, Nafanya, +3.....111111",
-              "price": "12366",
-              "owner": "62ff62db76172b42dd276f3a",
-              "category": "Sell",
-              "createdAt": "2022-08-21T20:50:38.508Z",
-              "updatedAt": "2022-08-21T20:50:38.508Z",
-              "__v": 0
-            },
-            {
-              "_id": "63029a9e67447e95c6d81cee",
-              "type_of_pet": "shinshila1",
-              "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
-              "district": "shinshila",
-              "description": "shinshila1",
-              "userContacts": "Kiev, Nafanya, +3.....111111",
-              "price": "12366",
-              "owner": "62ff62db76172b42dd276f3a",
-              "category": "Sell",
-              "createdAt": "2022-08-21T20:50:38.508Z",
-              "updatedAt": "2022-08-21T20:50:38.508Z",
-              "__v": 0
-            }
-          ]
-        }
-      },
-      "NoticeRequest": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string"
-          },
-          "serSelectedNotices": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string"
-                },
-                "type_of_pet": {
-                  "type": "string"
-                },
-                "animals_photos": {
-                  "type": "string"
-                },
-                "district": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "userContacts": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "string"
-                },
-                "owner": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "__v": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "category": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "example": {
-          "success": true,
-          "userSelectedNotices": {
-            "_id": "63029a9e67447e95c6d80cee",
-            "type_of_pet": "shinshila",
-            "animals_photos": "https://res.cloudinary.com/nafin13/image/upload/v1661115037/ow7dsa4ifrr7ubnwqtj7.jpg",
-            "district": "shinshila",
-            "description": "shinshila",
-            "userContacts": "Kiev, Nafanya, +3.....111111",
-            "price": "12366",
-            "owner": "62ff62db76172b42dd276f3a",
-            "category": "Sell",
-            "createdAt": "2022-08-21T20:50:38.508Z",
-            "updatedAt": "2022-08-21T20:50:38.508Z",
-            "__v": 0
-          }
-        }
-      },
-      "PetRequest": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string"
-          },
-          "serSelectedNotices": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "birthdate": {
-                  "type": "string"
-                },
-                "breed": {
-                  "type": "string"
-                },
-                "avatarURL": {
-                  "type": "string"
-                },
-                "comments": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "category": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "example": {
-          "name": "Zuza11111",
-          "birthdate": "2018-04-13",
-          "breed": "kvolik1",
-          "avatarURL": "image.jpg",
-          "comments": "it is kvolik1"
-        }
-      },
-      "PetResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          },
-          "pet": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string"
-              },
-              "owner": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string"
-              },
-              "breed": {
-                "type": "string"
-              },
-              "avatarURL": {
-                "type": "string"
-              },
-              "comments": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "updatedAt": {
-                "type": "string"
-              },
-              "__v": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "example": {
-          "success": true,
-          "pet": {
-            "owner": "62ff62db76172b42dd276f3a",
-            "name": "Zuza11111",
-            "birthdate": "2018-04-13",
-            "breed": "kvolik1",
-            "avatarURL": "https://res.cloudinary.com/nafin13/image/upload/v1661108986/lwxrkglps5dmaa2xxoiv.jpg",
-            "comments": "it is kvolik1",
-            "_id": "630282faedee5dcf51e15c78",
-            "createdAt": "2022-08-21T19:09:46.069Z",
-            "updatedAt": "2022-08-21T19:09:46.069Z",
-            "__v": 0
-          }
+          "category": "products",
+          "amount": 1000
         }
       }
     },

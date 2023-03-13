@@ -71,9 +71,16 @@ const userInfo = async (req, res) => {
 const addBalance = async (req, res) => {
   const _id = req.user;
   const {balance} = req.body;
+  const IsBalance = await User.findByIdAndUpdate(_id)
+
+  if(IsBalance.balance){
+  return  res.status(400).send('You already have a balance!')
+  }
+
   const upUser = await User.findByIdAndUpdate(_id, {
     balance
   }, {new: true})
+
   res.status(200).json(upUser.balance);
 };
 

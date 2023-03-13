@@ -5,6 +5,44 @@ const { BadRequest } = require('http-errors');
 const personalPlan = require("../models/personalPlan");
 const mongoose = require("mongoose");
 
+const getCategory = async (req, res) => {
+  arrOfCategory = [
+    {
+      name: "products",
+      title: "Products"
+  },
+  {
+    name: "clothing",
+    title: "Clothing and footwear"
+},
+{
+  name: "cafes",
+  title: "Cafes and restaurants"
+},
+{
+  name: "beauty",
+  title: "Beauty and medicine"
+},
+{
+  name: "health",
+  title: "Health"
+},
+{
+  name: "transport",
+  title: "Transport"
+},
+{
+  name: "house",
+  title: "House"
+},
+{
+  name: "other",
+  title: "Other"
+}
+]
+
+res.send(arrOfCategory);
+}
 
 const preTransaction = async (req, res) => {
   const { _id } = req.user;
@@ -88,11 +126,12 @@ async function createTransaction(req, res) {
     owner: _id,
   });
 
+const newBalance = type === "expense" ? balance - sum : balance + sum
   await User.findByIdAndUpdate(_id, {
-    balance: balance - sum,
+    balance: newBalance,
   });
 
-  res.json({sum, type,  owner: _id, newBalance: balance - sum});
+  res.json({sum, type,  owner: _id, newBalance});
 }
 
 async function getTransaction(req, res) {
@@ -144,29 +183,82 @@ if (!year && !month){
 
 async function puchTransaction(req, res) {
   const { id } = req.params;
+  const { _id, balance } = req.user;
+    
+  if(req.body.sum){
+    const transactionPoint = await Transaction.findById(id);
 
-  const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true });
+    const newBalance = type === "expense" ? balance+transactionPoint.sum - req.body.sum : balance - transactionPoint.sum + req.body.sum
+   await User.findByIdAndUpdate(_id, {
+      balance: newBalance,
+    });
 
-  res.json(transactionUpdate);
+    const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true });
+
+   return res.json({sum:transactionUpdate.sum, type:transactionUpdate.type, owner: _id, newBalance});
+  } 
+
+  const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true }).select({ owner: 0, __v: 0 });
+
+  res.json({sum:transactionUpdate.sum, type:transactionUpdate.type, owner: _id, newBalance: balance});
 }
 
 async function transactionDelete(req, res) {
   const { id } = req.params;
+  const { _id, balance } = req.user;
 
-  const transactionRemove = await Transaction.findByIdAndDelete(id);
+  const transactionRemove = await Transaction.findByIdAndDelete(id).select({ owner: 0, __v: 0 });
+
+  const newBalance = transactionRemove.type === "expense" ? balance + transactionRemove.sum : balance - transactionRemove.sum
+
+  await User.findByIdAndUpdate(_id, {
+    balance: newBalance,
+  });
 
   res.json(transactionRemove);
 }
 
 async function transactionByCategory(req, res) {
-  const { year, month } = req.params;
   const { _id } = req.user;
+
+  const opt = { owner: mongoose.Types.ObjectId(_id),
+  type: "expense" }
+
+  let { year, month } = req.query;
+  if ( month > 12 || month < 1 ){
+    throw new BadRequest('Bad query request!');}
+
+if (year && month){
+  year = Number(year);
+  month = Number(month);
+
+  const startMonth = month - 1;
+  const endMonth = startMonth === 11 ? 0 : month;
+  const endYear = startMonth === 11 ? year + 1 : year;
+
+  opt.date={
+    $gte: new Date(year, startMonth),
+    $lt: new Date(endYear, endMonth),
+  }
+}
+
+if (!year && !month){
+  opt.$expr = {
+    $eq: [
+      new Date().toISOString().slice(0, 10),
+      {
+        $dateToString: {
+          date: "$date",
+          format: "%Y-%m-%d"
+        }
+      }
+    ]
+  }
+}
 
   const result = await Transaction.aggregate([
     {
-      $match: {
-        owner: _id,
-      },
+      $match: opt,
     },
     {
       $group: {
@@ -186,25 +278,9 @@ async function transactionByCategory(req, res) {
         },
       },
     },
-    {
-      $group: {
-        _id: null,
-        total: {
-          $sum: "$stat.amount",
-        },
-        stats: {
-          $push: { aaa: "$stat", procent: Math.floor("$total" / "$stat.amount") },
-        },
-      },
-    },
-
-    {
-      $sort: {
-        amount: -1,
-      },
-    },
   ]);
-  res.json(result);
+
+  res.json(result.stat);
 }
 
 module.exports = {
@@ -214,4 +290,5 @@ module.exports = {
   transactionDelete,
   transactionByCategory,
   preTransaction,
+  getCategory
 };

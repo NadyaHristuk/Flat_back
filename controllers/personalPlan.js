@@ -21,7 +21,7 @@ const prePersonalPlan = async (req, res) => {
 const addPersonalPlan = async (req, res) => {
   const { _id } = req.user;
  
-  const data = await personalPlan.findOne({ owner: _id }).lean();
+  const data = await personalPlan.findOne({ owner: _id }, { owner: 0, __v: 0 }).lean();
 
   if(data){
     return res.status(400).send('You already have a personal plan!')
@@ -45,7 +45,7 @@ const addPersonalPlan = async (req, res) => {
 const getPersonalPlan = async (req, res) => {
   const { _id } = req.user;
 
-  const data = await personalPlan.findOne({ owner: _id }).lean();
+  const data = await personalPlan.findOne({ owner: _id }, { owner: 0, __v: 0 }).lean();
 
   if(!data){
     return res.status(400).send('You don`t have a personal plan!')
@@ -67,7 +67,7 @@ const patchPersonalPlan = async (req, res) => {
     { owner: _id },
     { ...req.body },
     { new: true }
-  ).lean();
+  ).lean().select({ owner: 0, __v: 0 });
   if(!data){
     return res.status(400).send('You don`t have a personal plan!')
   }
