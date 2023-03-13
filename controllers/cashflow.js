@@ -110,6 +110,14 @@ const preTransaction = async (req, res) => {
       },
     },
   ]);
+console.log(totalByMounth, totalByDay);
+
+if(totalByDay.length===0 && totalByMounth.length===0) {
+  res.json({ totalByMounth: 0, totalByDay: 0, monthLimit, dailyLimit });
+}
+if(totalByDay.length===0 && totalByMounth.length!==0) {
+  res.json({ totalByMounth:totalByMounth[0].amount, totalByDay: 0, monthLimit, dailyLimit });
+}
 
   res.json({ totalByMounth: totalByMounth[0].amount, totalByDay: totalByDay[0].amount, monthLimit, dailyLimit });
 };
@@ -130,7 +138,9 @@ const newBalance = type === "expense" ? balance - sum : balance + sum
   await User.findByIdAndUpdate(_id, {
     balance: newBalance,
   });
-
+if(type === "expense"){
+  return  res.json({sum, type, category, comment, owner: _id, newBalance});
+}
   res.json({sum, type,  owner: _id, newBalance});
 }
 
@@ -188,34 +198,46 @@ async function puchTransaction(req, res) {
   if(req.body.sum){
     const transactionPoint = await Transaction.findById(id);
 
-    const newBalance = type === "expense" ? balance+transactionPoint.sum - req.body.sum : balance - transactionPoint.sum + req.body.sum
-   await User.findByIdAndUpdate(_id, {
+    const newBalance = transactionPoint.type === "expense" ? balance+transactionPoint.sum - req.body.sum : balance - transactionPoint.sum + req.body.sum
+   
+    await User.findByIdAndUpdate(_id, {
       balance: newBalance,
     });
 
-    const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true });
+    const {sum, type, category, comment, owner} = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true });
+    
+    if(type === "expense"){
+      return  res.json({sum, type, category, comment, owner, newBalance});
+    }
 
-   return res.json({sum:transactionUpdate.sum, type:transactionUpdate.type, owner: _id, newBalance});
+    return  res.json({sum, type,  owner, newBalance});   
   } 
 
-  const transactionUpdate = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true }).select({ owner: 0, __v: 0 });
+  const {sum, type, category, comment, owner} = await Transaction.findByIdAndUpdate(id, { ...req.body }, { new: true }).select({ owner: 0, __v: 0 });
+  
+  if(type === "expense"){
+    return  res.json({sum, type, category, comment, owner, newBalance: balance});
+  }  
 
-  res.json({sum:transactionUpdate.sum, type:transactionUpdate.type, owner: _id, newBalance: balance});
+  res.json({sum, type,  owner, newBalance: balance});
 }
 
 async function transactionDelete(req, res) {
   const { id } = req.params;
   const { _id, balance } = req.user;
 
-  const transactionRemove = await Transaction.findByIdAndDelete(id).select({ owner: 0, __v: 0 });
+  const {sum, type, category, comment, owner} = await Transaction.findByIdAndDelete(id).select({ owner: 0, __v: 0 });
 
   const newBalance = transactionRemove.type === "expense" ? balance + transactionRemove.sum : balance - transactionRemove.sum
 
   await User.findByIdAndUpdate(_id, {
     balance: newBalance,
   });
+  if(type === "expense"){
+    return  res.json({sum, type, category, comment, owner, newBalance});
+  }
 
-  res.json(transactionRemove);
+  res.json({sum, type,  owner, newBalance}); 
 }
 
 async function transactionByCategory(req, res) {
